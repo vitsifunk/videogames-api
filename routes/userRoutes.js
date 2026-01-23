@@ -10,7 +10,7 @@ router.post('/login', authController.login);
 router.patch('/updateMe', authController.protect, userController.updateMe);
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
-// Optional (admin only) - ωραίο για report
+// Optional (admin only)
 router.get(
   '/',
   authController.protect,

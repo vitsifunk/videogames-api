@@ -1,5 +1,7 @@
 const e = require('cors');
+const slugify = require('slugify');
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const gameSchema = new mongoose.Schema(
   {
