@@ -10,7 +10,7 @@
     "delete:data": "node dev-data/import-dev-data.js --delete"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vaios Tsiaras",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
