@@ -71,9 +71,9 @@ const gameSchema = new mongoose.Schema(
       required: [true, 'A game must have a difficulty'],
       trim: true,
       enum: {
-        values: ['Easy', 'Medium', 'Hard', 'Extreme'],
+        values: ['Easy', 'Medium', 'Hard', 'Very Hard'],
         message:
-          'Difficulty must be one of the following: Easy, Medium, Hard, Extreme',
+          'Difficulty must be one of the following: Easy, Medium, Hard, Very Hard',
       },
     },
 
