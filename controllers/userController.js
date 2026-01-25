@@ -4,27 +4,29 @@ const AppError = require('./../utils/appError');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
+  if (!obj) return newObj;
+
   Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
+
   return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
+// Admin only: GET all users
+exports.getAllUsers = catchAsync(async (req, res) => {
   const users = await User.find();
 
-  // SEND RESPONSE
   res.status(200).json({
     status: 'success',
     results: users.length,
-    data: {
-      users,
-    },
+    data: { users },
   });
 });
 
+// Logged-in user: update my profile (name/email)
 exports.updateMe = catchAsync(async (req, res, next) => {
-  // 1) Create error if user POSTs password data
+  // 1) Block password updates here
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -34,24 +36,27 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  // 2) Filtered out unwanted fields names that are not allowed to be updated
+  // 2) Allow only specific fields
   const filteredBody = filterObj(req.body, 'name', 'email');
 
-  // 3) Update user document
+  // 3) Update user
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
   });
 
+  if (!updatedUser) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
   res.status(200).json({
     status: 'success',
-    data: {
-      user: updatedUser,
-    },
+    data: { user: updatedUser },
   });
 });
 
-exports.deleteMe = catchAsync(async (req, res, next) => {
+// Logged-in user: deactivate my account
+exports.deleteMe = catchAsync(async (req, res) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
 
   res.status(204).json({
@@ -60,27 +65,14 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
+// Admin only: GET user by ID
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) return next(new AppError('No user found with that ID', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: { user },
   });
-};
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
+});
