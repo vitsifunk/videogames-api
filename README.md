@@ -19,7 +19,7 @@ Postman (API testing)
 
 Nodemon
 
-Helmet / Morgan / express-mongo-sanitize / xss-clean
+Helmet / Morgan
 
 📂 Project Structure (MVC)
 videogames-api/
@@ -149,7 +149,7 @@ Virtual fields (e.g. valueScore)
 
 Centralized error handling
 
-Secure HTTP headers and request sanitization
+Secure HTTP headers and rate limiting
 
 📌 Conclusion
 
