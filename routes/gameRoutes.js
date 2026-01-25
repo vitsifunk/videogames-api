@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const gameController = require('../controllers/gameController');
 const authController = require('./../controllers/authController');
 
@@ -31,7 +31,7 @@ router
   .patch(gameController.updateGame)
   .delete(
     authController.protect,
-    authController.restrictTo('admin', 'lead-guide'),
+    authController.restrictTo('admin'),
     gameController.deleteGame,
   );
 
