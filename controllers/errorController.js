@@ -57,14 +57,13 @@ const sendErrorProd = (err, res) => {
 };
 
 module.exports = (err, req, res, next) => {
-  // console.log(err.stack);
-
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
+    // Preserve name/message from native Error while copying enumerable fields
     let error = { ...err, name: err.name, message: err.message };
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);
