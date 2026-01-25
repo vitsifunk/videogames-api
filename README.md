@@ -1,157 +1,166 @@
-🎮 Video Games RESTful API
+Video Games REST API
 
-A RESTful API developed with Node.js, Express.js, and MongoDB, designed for managing and providing information about video games.
-The application follows the MVC (Model–View–Controller) architecture and supports authentication, authorization, CRUD operations, and advanced aggregation queries.
+This project is a RESTful API for managing and providing information about video games. It is built with Node.js and Express, follows the MVC (Model–View–Controller) architecture, and uses MongoDB as a data store.
 
-🚀 Technologies Used
+The API supports full CRUD operations for video games, user authentication and authorization using JSON Web Tokens (JWT), and aggregation endpoints for statistical and grouped data.
+
+Features
+
+RESTful API design
+
+MVC architecture
+
+MongoDB & Mongoose integration
+
+User authentication with JWT
+
+Role-based authorization (admin / user)
+
+Data validation at schema level
+
+Aggregate endpoints (statistics, grouping)
+
+Filtering, sorting, field limiting and pagination
+
+Basic security middleware (Helmet, Rate Limiting, HPP)
+
+Tech Stack
 
 Node.js
 
 Express.js
 
-MongoDB Atlas
+MongoDB (MongoDB Atlas)
 
 Mongoose
 
 JSON Web Tokens (JWT)
 
-Postman (API testing)
+bcryptjs
 
-Nodemon
+Helmet
 
-Helmet / Morgan
+express-rate-limit
 
-📂 Project Structure (MVC)
-videogames-api/
-│
+hpp
+
+Project Structure
 ├── controllers/
-│ ├── gameController.js
-│ ├── userController.js
-│ └── authController.js
-│
 ├── models/
-│ ├── gameModel.js
-│ └── userModel.js
-│
 ├── routes/
-│ ├── gameRoutes.js
-│ └── userRoutes.js
-│
 ├── utils/
-│ ├── apiFeatures.js
-│ ├── appError.js
-│ └── catchAsync.js
-│
 ├── dev-data/
-│ └── import-dev-data.js
-│
 ├── app.js
 ├── server.js
-├── package.json
-└── config.env
 
-⚙️ Installation & Setup
-1️⃣ Clone the repository
-git clone https://github.com/your-username/videogames-api.git
-cd videogames-api
 
-2️⃣ Install dependencies
+models: Mongoose schemas and models
+
+controllers: Request handling logic
+
+routes: API endpoints
+
+utils: Error handling and helper utilities
+
+dev-data: Dataset and data import scripts
+
+Installation
+
+Clone the repository:
+
+git clone https://github.com/vitsifunk/videogames-api.git
+
+
+Install dependencies:
+
 npm install
 
-3️⃣ Environment variables
 
-Create a config.env file in the root directory:
+Create a config.env file:
 
-NODE_ENV=development
 PORT=8000
-DATABASE=<your MongoDB Atlas connection string>
-JWT_SECRET=your-secret-key
+DATABASE=<MongoDB connection string>
+JWT_SECRET=<your_secret>
 JWT_EXPIRES_IN=90d
+NODE_ENV=development
 
-⚠️ The config.env file is not included in the repository for security reasons.
 
-▶️ Running the Application
-Development mode
+Start the server:
+
 npm run dev
 
-Production mode
-npm start
+Data Import
 
-Server runs at:
+Initial game data is imported from a JSON dataset using a standalone script.
 
-http://localhost:8000
+Import data:
 
-🔐 Authentication & Authorization
+npm run import:data
 
-Users can sign up and log in
 
-Authentication is handled using JWT
+Delete data:
 
-Protected routes require a Bearer Token
+npm run delete:data
 
-Role-based authorization:
+API Endpoints
+Games
 
-admin: create, update, delete games
+GET /api/v1/games
 
-user: read-only access
+GET /api/v1/games/:id
 
-Example Authorization Header (Postman)
-Authorization: Bearer <JWT_TOKEN>
+POST /api/v1/games (admin)
 
-📌 API Endpoints
-👤 Users
-Method Endpoint Description
-POST /api/v1/users/signup Register a new user
-POST /api/v1/users/login Login and get JWT
-🎮 Games (CRUD)
-Method Endpoint Access
-GET /api/v1/games Public
-GET /api/v1/games/:id Public
-POST /api/v1/games Admin
-PATCH /api/v1/games/:id Admin
-DELETE /api/v1/games/:id Admin
-📊 Aggregate & Advanced Endpoints
-Endpoint Description
-/api/v1/games/top-5 Top 5 games by rating
-/api/v1/games/stats Rating & price statistics
-/api/v1/games/by-company Games grouped by company
-/api/v1/games/by-year Games grouped by release year
-🔎 Advanced Query Features
+PATCH /api/v1/games/:id (admin)
 
-The API supports:
+DELETE /api/v1/games/:id (admin)
 
-Filtering
+Aggregation
 
-Sorting
+GET /api/v1/games/top-5
 
-Field limiting
+GET /api/v1/games/stats
 
-Pagination
+GET /api/v1/games/by-year
 
-Example:
-/api/v1/games?rating[gte]=8&sort=-rating,price&fields=title,price,rating&page=1&limit=5
+GET /api/v1/games/by-company
 
-🧪 Testing
+Users
 
-All endpoints were tested using Postman
+POST /api/v1/users/signup
 
-Screenshots of requests and responses are included in the project report
+POST /api/v1/users/login
 
-MongoDB collections were verified using MongoDB Compass / Atlas UI
+GET /api/v1/users (admin)
 
-🧠 Additional Features
+GET /api/v1/users/:id (admin)
 
-Data validation using Mongoose
+GET /api/v1/users/delete/:id (admin)
 
-Indexes for performance optimization
+PATCH /api/v1/users/updateMe
 
-Virtual fields (e.g. valueScore)
+DELETE /api/v1/users/deleteMe
 
-Centralized error handling
+Authentication & Authorization
 
-Secure HTTP headers and rate limiting
+Authentication is handled using JSON Web Tokens (JWT). Protected endpoints require a valid token to be provided in the Authorization header using the Bearer scheme.
 
-📌 Conclusion
+Role-based access control is implemented to restrict certain operations (such as creating or deleting games) to admin users only.
 
-This project demonstrates the development of a complete RESTful API with modern backend technologies, following best practices in architecture, security, and performance.
-It provides a scalable and maintainable solution for managing video game data.
+API Testing
+
+All endpoints were tested using Postman, covering:
+
+Authentication and authorization flows
+
+CRUD operations
+
+Aggregate queries
+
+Pagination and sorting
+
+Error handling (401, 403, 404)
+
+Summary
+
+This project demonstrates a clean and scalable REST API implementation using modern Node.js practices. It focuses on maintainability, security, and structured data access, making it suitable both for academic purposes and as a portfolio project.
